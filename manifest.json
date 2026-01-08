@@ -1,0 +1,16 @@
+{
+  "name": "Ninguém Vai Saber",
+  "short_name": "Confissões",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "description": "Confissões anônimas. Reais. Sem filtro.",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/565/565547.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
