@@ -114,35 +114,14 @@
 </div>
 
 <script>
-  const respostas = [
-  {
-    intro: "Você não é estranho por sentir isso.",
-    texto: "Muita gente vive no automático só pra não encarar o que dói."
-  },
-  {
-    intro: "Quase ninguém fala sobre isso.",
-    texto: "Mas esse tipo de pensamento aparece quando a gente aguenta mais do que devia."
-  },
-  {
-    intro: "Isso não te define.",
-    texto: "Mas diz muito sobre o quanto você anda cansado."
-  },
-  {
-    intro: "Se você sente isso, não é fraqueza.",
-    texto: "É sinal de que algo importante está sendo ignorado."
-  },
-  {
-    intro: "Talvez você nunca diga isso em voz alta.",
-    texto: "E tudo bem. Nem tudo precisa ser dito pra ser real."
-  },
-  {
-    intro: "Isso soa mais comum do que parece.",
-    texto: "Só não é confortável admitir."
-  },
-  {
-    intro: "Tem dias que a gente só continua.",
-    texto: "Não por esperança, mas por hábito."
-  }
+ 
+const respostas = [
+  { intro: "Você não é estranho por sentir isso.", texto: "Muita gente vive no automático só pra não encarar o que dói." },
+  { intro: "Quase ninguém fala sobre isso.", texto: "Esse tipo de pensamento aparece quando a gente aguenta mais do que devia." },
+  { intro: "Isso não te define.", texto: "Mas diz muito sobre o quanto você anda cansado." },
+  { intro: "Se você sente isso, não é fraqueza.", texto: "É sinal de que algo importante está sendo ignorado." },
+  { intro: "Talvez você nunca diga isso em voz alta.", texto: "Nem tudo precisa ser dito pra ser real." },
+  { intro: "Tem dias que a gente só continua.", texto: "Não por esperança, mas por hábito." }
 ];
 
 const confissoes = [
@@ -150,27 +129,24 @@ const confissoes = [
   "Sinto falta de alguém que ainda está na minha vida.",
   "Tenho medo de ser descoberto como alguém medíocre.",
   "Às vezes queria desaparecer sem machucar ninguém.",
-  "Tenho inveja até de quem está pior que eu.",
   "Não confio nem nas pessoas que dizem me amar.",
   "Sorrio muito para não precisar explicar nada."
 ];
 
-  let hoje = new Date().toDateString();
-  let estado = JSON.parse(localStorage.getItem("estado")) || {
-    data: hoje,
-    lidas: 0
-  };
+let hoje = new Date().toDateString();
+let estado = JSON.parse(localStorage.getItem("estado")) || { data: hoje, lidas: 0 };
 
-  if (estado.data !== hoje) {
-    estado = { data: hoje, lidas: 0 };
-  }
+if (estado.data !== hoje) {
+  estado = { data: hoje, lidas: 0 };
+}
 
-  function enviar() {
-    document.getElementById("entrada").value = "";
-    mostrarResposta();
-  }
+function salvar() {
+  localStorage.setItem("estado", JSON.stringify(estado));
+  document.getElementById("contador").innerText =
+    `Hoje, ${1200 + Math.floor(Math.random() * 800)} pessoas sentiram algo parecido.`;
+}
 
- function mostrarResposta() {
+function mostrarResposta() {
   const r = respostas[Math.floor(Math.random() * respostas.length)];
   const c = confissoes[Math.floor(Math.random() * confissoes.length)];
 
@@ -184,13 +160,16 @@ const confissoes = [
   salvar();
 }
 
- function outra() {
+function enviar() {
+  document.getElementById("entrada").value = "";
+  mostrarResposta();
+}
+
+function outra() {
   if (estado.lidas >= 3) {
     document.getElementById("resposta").innerHTML = `
       <p><strong>Você já leu bastante hoje.</strong></p>
-      <p style="color:#ccc;font-size:14px;">
-        Quer ler mais uma?
-      </p>
+      <p style="color:#ccc;font-size:14px;">Quer ler mais uma?</p>
       <button class="primary" onclick="liberar()">Liberar mais uma</button>
     `;
     return;
@@ -202,10 +181,8 @@ function liberar() {
   estado.lidas--;
   mostrarResposta();
 }
-    mostrarResposta();
-  }
 
-  function compartilhar() {
+function compartilhar() {
   const frases = [
     "Li algo aqui que não saiu da minha cabeça.",
     "Isso me pegou de um jeito estranho.",
@@ -227,13 +204,8 @@ function liberar() {
   }
 }
 
-  function salvar() {
-    localStorage.setItem("estado", JSON.stringify(estado));
-    document.getElementById("contador").innerText =
-      `Hoje, ${1200 + Math.floor(Math.random() * 800)} pessoas sentiram algo parecido.`;
-  }
+salvar();
 
-  salvar();
 </script>
 
 </body>
