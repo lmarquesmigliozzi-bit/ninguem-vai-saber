@@ -114,15 +114,46 @@
 </div>
 
 <script>
-  const confissoes = [
-    "Finjo estar bem, mas estou exausto.",
-    "Tenho medo de nunca ser suficiente.",
-    "Sinto inveja de pessoas próximas.",
-    "Queria sumir por um tempo.",
-    "Tenho tudo e ainda assim me sinto vazio.",
-    "Fico com raiva de quem me ama.",
-    "Não sou quem as pessoas acham que sou."
-  ];
+  const respostas = [
+  {
+    intro: "Você não é estranho por sentir isso.",
+    texto: "Muita gente vive no automático só pra não encarar o que dói."
+  },
+  {
+    intro: "Quase ninguém fala sobre isso.",
+    texto: "Mas esse tipo de pensamento aparece quando a gente aguenta mais do que devia."
+  },
+  {
+    intro: "Isso não te define.",
+    texto: "Mas diz muito sobre o quanto você anda cansado."
+  },
+  {
+    intro: "Se você sente isso, não é fraqueza.",
+    texto: "É sinal de que algo importante está sendo ignorado."
+  },
+  {
+    intro: "Talvez você nunca diga isso em voz alta.",
+    texto: "E tudo bem. Nem tudo precisa ser dito pra ser real."
+  },
+  {
+    intro: "Isso soa mais comum do que parece.",
+    texto: "Só não é confortável admitir."
+  },
+  {
+    intro: "Tem dias que a gente só continua.",
+    texto: "Não por esperança, mas por hábito."
+  }
+];
+
+const confissoes = [
+  "Finjo que não me importo, mas me importo demais.",
+  "Sinto falta de alguém que ainda está na minha vida.",
+  "Tenho medo de ser descoberto como alguém medíocre.",
+  "Às vezes queria desaparecer sem machucar ninguém.",
+  "Tenho inveja até de quem está pior que eu.",
+  "Não confio nem nas pessoas que dizem me amar.",
+  "Sorrio muito para não precisar explicar nada."
+];
 
   let hoje = new Date().toDateString();
   let estado = JSON.parse(localStorage.getItem("estado")) || {
@@ -139,37 +170,62 @@
     mostrarResposta();
   }
 
-  function mostrarResposta() {
-    const texto = confissoes[Math.floor(Math.random() * confissoes.length)];
-    document.getElementById("resposta").innerHTML = `
-      <p><strong>Muita gente sente isso.</strong><br>Só não admite.</p>
-      <p class="confissao">“${texto}”</p>
-    `;
-    estado.lidas++;
-    salvar();
-  }
+ function mostrarResposta() {
+  const r = respostas[Math.floor(Math.random() * respostas.length)];
+  const c = confissoes[Math.floor(Math.random() * confissoes.length)];
 
-  function outra() {
-    if (estado.lidas >= 3) {
-      alert("Chega por hoje.\nVolte amanhã.");
-      return;
-    }
+  document.getElementById("resposta").innerHTML = `
+    <p><strong>${r.intro}</strong></p>
+    <p class="confissao">“${c}”</p>
+    <p style="color:#aaa;font-size:13px;">${r.texto}</p>
+  `;
+
+  estado.lidas++;
+  salvar();
+}
+
+ function outra() {
+  if (estado.lidas >= 3) {
+    document.getElementById("resposta").innerHTML = `
+      <p><strong>Você já leu bastante hoje.</strong></p>
+      <p style="color:#ccc;font-size:14px;">
+        Quer ler mais uma?
+      </p>
+      <button class="primary" onclick="liberar()">Liberar mais uma</button>
+    `;
+    return;
+  }
+  mostrarResposta();
+}
+
+function liberar() {
+  estado.lidas--;
+  mostrarResposta();
+}
     mostrarResposta();
   }
 
   function compartilhar() {
-    const texto = "Alguém escreveu isso hoje. E doeu ler.";
-    if (navigator.share) {
-      navigator.share({
-        title: "Ninguém Vai Saber",
-        text: texto,
-        url: window.location.href
-      });
-    } else {
-      navigator.clipboard.writeText(texto + " " + window.location.href);
-      alert("Texto copiado. Agora é só colar e compartilhar.");
-    }
+  const frases = [
+    "Li algo aqui que não saiu da minha cabeça.",
+    "Isso me pegou de um jeito estranho.",
+    "Alguém escreveu algo aqui que parece comigo.",
+    "Não sei por que isso fez sentido."
+  ];
+
+  const texto = frases[Math.floor(Math.random() * frases.length)];
+
+  if (navigator.share) {
+    navigator.share({
+      title: "Ninguém Vai Saber",
+      text: texto,
+      url: window.location.href
+    });
+  } else {
+    navigator.clipboard.writeText(texto + " " + window.location.href);
+    alert("Texto copiado. Agora é só colar e compartilhar.");
   }
+}
 
   function salvar() {
     localStorage.setItem("estado", JSON.stringify(estado));
